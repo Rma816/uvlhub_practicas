@@ -11,6 +11,9 @@ on:
 jobs:
   codacy:
     runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        python-version: ['3.13', '3.14'] # Para probar en las 2 versiones de Python (Modificación 2)
     services:
       mariadb:
         image: mariadb:12.0.2
@@ -34,13 +37,21 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
-        python-version: '3.13'
+        python-version: ${{ matrix.python-version }} # Para probar en las 2 versiones de Python (Modificación 2)
 
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
         pip install -e ./rosemary
+
+    - name: Verificar nuevas versiones de dependencias # Modificación 1
+      run: pip list --outdated
+    
+    - name: Analisis de seguridad con pip-audit # Modificación 3
+      run: |
+        pip install pip-audit
+        pip-audit
 
     - name: Run tests with coverage
       run: |
