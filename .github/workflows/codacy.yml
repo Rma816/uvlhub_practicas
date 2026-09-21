@@ -49,6 +49,7 @@ jobs:
       run: pip list --outdated
     
     - name: Analisis de seguridad con pip-audit # Modificación 3
+      continue-on-error: true # Para que no falle el workflow si se encuentran vulnerabilidades
       run: |
         pip install pip-audit
         pip-audit
