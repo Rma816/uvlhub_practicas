@@ -1,1 +1,2 @@
 linea base
+ y arreglo aplicado
